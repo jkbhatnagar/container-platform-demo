@@ -1,0 +1,121 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Mi
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-initdb
+data:
+  init.sql: |
+    -- Your full init.sql content here
+    DROP DATABASE IF EXISTS complaints_db;
+    CREATE DATABASE complaints_db;
+    USE complaints_db;
+
+    CREATE TABLE Users (
+        user_id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(100) NOT NULL,
+        email VARCHAR(150) UNIQUE NOT NULL,
+        role ENUM('customer', 'staff', 'manager') NOT NULL,
+        password_hash VARCHAR(255) NOT NULL
+    );
+
+    CREATE TABLE Complaints (
+        complaint_id INT AUTO_INCREMENT PRIMARY KEY,
+        customer_id INT NOT NULL,
+        category VARCHAR(100) NOT NULL,
+        description TEXT NOT NULL,
+        status ENUM('Open', 'In Progress', 'Resolved', 'Closed') DEFAULT 'Open',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        attachment_url VARCHAR(255),
+        FOREIGN KEY (customer_id) REFERENCES Users(user_id)
+    );
+
+    CREATE TABLE AuditLogs (
+        log_id INT AUTO_INCREMENT PRIMARY KEY,
+        complaint_id INT NOT NULL,
+        action VARCHAR(255) NOT NULL,
+        actor_id INT,
+        timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (complaint_id) REFERENCES Complaints(complaint_id),
+        FOREIGN KEY (actor_id) REFERENCES Users(user_id)
+    );
+
+    -- Insert sample data and other DDL here...
+    INSERT INTO Users (name, email, role, password_hash) VALUES
+    ('Alice Johnson', 'alice@example.com', 'customer', 'hash1'),
+    ('Bob Smith', 'bob@example.com', 'staff', 'hash2'),
+    ('Charlie Brown', 'charlie@example.com', 'manager', 'hash3');
+
+    INSERT INTO Complaints (customer_id, category, description, status, attachment_url) VALUES
+    (1, 'Billing', 'Incorrect charge on my account', 'Open', NULL),
+    (1, 'Service', 'Internet service outage', 'In Progress', NULL);
+
+    INSERT INTO AuditLogs (complaint_id, action, actor_id) VALUES
+    (1, 'Complaint created', 1),
+    (2, 'Complaint created', 1),
+    (2, 'Status changed from Open to In Progress', 2);
+
+    -- Add your views, procedures, triggers as well...
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+        - name: mysql
+          image: mysql:8.0
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: "rootpassword"
+            - name: MYSQL_DATABASE
+              value: "complaints_db"
+          ports:
+            - containerPort: 3306
+          volumeMounts:
+            - name: mysql-persistent-storage
+              mountPath: /var/lib/mysql
+            - name: mysql-initdb
+              mountPath: /docker-entrypoint-initdb.d
+      volumes:
+        - name: mysql-persistent-storage
+          persistentVolumeClaim:
+            claimName: mysql-pvc
+        - name: mysql-initdb
+          configMap:
+            name: mysql-initdb
+            items:
+              - key: init.sql
+                path: init.sql
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-service
+spec:
+  type: ClusterIP
+  selector:
+    app: mysql
+  ports:
+    - port: 3306
+      targetPort: 3306
