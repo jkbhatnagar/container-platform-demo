@@ -11,7 +11,7 @@ kubectl apply -f database/db_service.yaml
 
 sleep 5
 
-kubectl port-forward svc/postgres-service 5432:5432
+# kubectl port-forward svc/postgres-service 5432:5432
 
 kubectl get pods
 
