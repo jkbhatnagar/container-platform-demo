@@ -1,18 +1,25 @@
-# Use an official Node runtime as a parent image
-FROM node:20-alpine
+# Use a small Node image
+FROM node:18-alpine
 
 # Create app directory
 WORKDIR /usr/src/app
 
-# Install app dependencies
-COPY package.json package-lock.json* ./
-RUN npm ci --production
+# Copy package files first for caching
+COPY package*.json ./
 
-# Bundle app source
+# Install deps (production only by default)
+RUN npm ci
+
+# Copy app source
 COPY . .
 
-# Expose the port your app listens on
-ENV PORT=3000
+# Create a non-root user and adjust permissions
+RUN addgroup -S appgroup && adduser -S appuser -G appgroup \
+  && chown -R appuser:appgroup /usr/src/app
+
+USER appuser
+
+# Expose port the app listens on
 EXPOSE 3000
 
 # Start the app
