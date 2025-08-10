@@ -86,7 +86,7 @@ app.delete('/complaints/:id', async (req, res) => {
 });
 
 // healthz route
-app.get('/healthz', (req, res) => {
+app.get('/complaints/healthz', (req, res) => {
   res.status(200).json({ status: 'ok' });
 });
 
