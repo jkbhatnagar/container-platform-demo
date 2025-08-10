@@ -6,7 +6,7 @@ WORKDIR /usr/src/app
 
 # Install app dependencies
 COPY package.json package-lock.json* ./
-RUN npm ci --omit=dev
+RUN npm ci --production
 
 # Bundle app source
 COPY . .
