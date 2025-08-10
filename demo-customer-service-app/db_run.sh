@@ -1,10 +1,10 @@
 # cd container-platform-demo/demo-customer-service-app/database/
 
-kubectl create configmap postgres-initdb --from-file=container-platform-demo/demo-customer-service-app/database/init.sql
+kubectl create configmap postgres-initdb --from-file=./database/init.sql
 
-kubectl apply -f container-platform-demo/demo-customer-service-app/database/db_deployment.yaml
+kubectl apply -f database/db_deployment.yaml
 
-kubectl apply -f platform-demo/demo-customer-service-app/database/db_service.yaml
+kubectl apply -f .database/db_service.yaml
 
 sleep 15
 
