@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: complaints-backend-deployment
+  namespace: default
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: complaints-backend-deployment
+  template:
+    metadata:
+      labels:
+        app: complaints-backend-deployment
+    spec:
+      containers:
+        - name: complaints-backend-container-nodejs
+          image: jatinbhatnagar/k8s-demo/complaints-backend-container-nodejs:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3000
+          env:
+            - name: PGHOST
+              valueFrom:
+                configMapKeyRef:
+                  name: complaints-backend-config
+                  key: PGHOST
+            - name: PGDATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: complaints-backend-config
+                  key: PGDATABASE
+            - name: PGPORT
+              valueFrom:
+                configMapKeyRef:
+                  name: complaints-backend-config
+                  key: PGPORT
+            - name: PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: complaints-backend-config
+                  key: PORT
+            - name: PGUSER
+              valueFrom:
+                secretKeyRef:
+                  name: complaints-backend-secret
+                  key: PGUSER
+            - name: PGPASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: complaints-backend-secret
+                  key: PGPASSWORD
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 3000
+            initialDelaySeconds: 20
+            periodSeconds: 20

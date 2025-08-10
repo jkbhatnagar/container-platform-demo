@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: complaints-backend-config
+  namespace: default
+data:
+  PGHOST: complaints-postgres-service
+  PGDATABASE: complaints_db
+  PGPORT: "5432"
+  PORT: "3000"

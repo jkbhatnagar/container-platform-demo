@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: postgres
+  name: complaints-postgres-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: postgres
+      app: complaints-postgres-deployment
   template:
     metadata:
       labels:
-        app: postgres
+        app: complaints-postgres-deployment
     spec:
       containers:
       - name: postgres
@@ -30,7 +30,7 @@ spec:
       volumes:
       - name: init-sql
         configMap:
-          name: postgres-initdb
+          name: complaints-postgres-initdb
           items:
           - key: init.sql
             path: init.sql
