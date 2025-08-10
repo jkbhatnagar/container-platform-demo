@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: complaints-backend-container-nodejs
-          image: jatinbhatnagar/k8s-demo/complaints-backend-container-nodejs:latest
+          image: jatinbhatnagar/container-platform-demo-backend-nodejs:v0.1
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
