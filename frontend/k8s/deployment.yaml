@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: complaints-frontend
+  namespace: container-platform-demo
   labels:
     app: complaints-frontend
 spec:

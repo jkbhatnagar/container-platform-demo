@@ -8,7 +8,8 @@ set -e
 if [ -f /usr/share/nginx/html/index.html ]; then
   echo "Substituting API_BASE into index.html"
   # Create temp copy and do replacement
-  envsubst '${API_BASE}' < /usr/share/nginx/html/index.html > /usr/share/nginx/html/index.html.tmp
+  # envsubst '${API_BASE}' < /usr/share/nginx/html/index.html > /usr/share/nginx/html/index.html.tmp
+  sed "s|__API_BASE__|${API_BASE}|g" /usr/share/nginx/html/index.html > /usr/share/nginx/html/index.html.tmp
   mv /usr/share/nginx/html/index.html.tmp /usr/share/nginx/html/index.html
 fi
 
