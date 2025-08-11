@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: complaints-frontend
-          image: jatinbhatnagar/container-platform-demo-backend-nginx:v0.1
+          image: jatinbhatnagar/container-platform-demo-frontend-nginx:v0.1
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80
