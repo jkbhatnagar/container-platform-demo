@@ -4,9 +4,9 @@ kubectl apply -f backend/k8s/deployment.yaml
 kubectl apply -f backend/k8s/service.yaml
 
 kubectl get secret -n container-platform-demo complaints-backend-secret -o yaml
-kubectl get configmap -n container-platform-demo -l app=complaints-backend-config
+kubectl get configmap -n container-platform-demo complaints-backend-config
 kubectl get pods -n container-platform-demo -l app=complaints-backend-deployment
-kubectl get svc -n container-platform-demo -l app=complaints-backend-service
+kubectl get svc -n container-platform-demo complaints-backend-service
 
 # kubectl logs deploy/complaints-backend-deployment -f
 

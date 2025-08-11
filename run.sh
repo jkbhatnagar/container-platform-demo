@@ -1,7 +1,7 @@
 # git clone https://github.com/jkbhatnagar/container-platform-demo.git
 # cd container-platform-demo/
-sudo chmod +x run.sh
-./run.sh
+# sudo chmod +x run.sh
+# ./run.sh
 
 sudo chmod +x admin/admin_run.sh
 ./admin/admin_run.sh
