@@ -26,7 +26,7 @@ spec:
             # e.g. http://complaints-service/complaints or http://complaints-service:80/complaints
             - name: API_BASE
               # value: "http://complaints-backend-service:80/complaints"
-              value: "http://localhost/complaints"
+              value: "http://localhost:8080/complaints"
           readinessProbe:
             httpGet:
               path: /
