@@ -10,7 +10,7 @@ WORKDIR /usr/share/nginx/html
 # Copy site files (index.html has placeholder __API_BASE__)
 COPY index.html .
 # copy optional assets folder if exists
-COPY public ./public
+# COPY public ./public
 
 # Copy custom nginx config if you need (optional)
 # COPY nginx.conf /etc/nginx/nginx.conf
