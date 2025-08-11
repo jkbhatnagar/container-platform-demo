@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Complaints Management</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; }
+    h1 { color: #333; }
+    form { margin-bottom: 2em; }
+    table { width: 100%; border-collapse: collapse; margin-top: 1em; }
+    th, td { padding: 8px; border: 1px solid #ccc; }
+    th { background-color: #f5f5f5; }
+    button { margin-right: 5px; }
+  </style>
+</head>
+<body>
+  <h1>Complaints Management</h1>
+
+  <h2>Add New Complaint</h2>
+  <form id="complaintForm">
+    <label>Category:
+      <input type="text" id="category" required>
+    </label>
+    <label>Description:
+      <input type="text" id="description" required>
+    </label>
+    <button type="submit">Add</button>
+  </form>
+
+  <h2>All Complaints</h2>
+  <table id="complaintsTable">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Category</th>
+        <th>Description</th>
+        <th>Status</th>
+        <th>Created</th>
+        <th>Updated</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+<script>
+const API_BASE = 'http://localhost:3000/complaints'; // change if deployed
+
+// Load complaints on page load
+document.addEventListener('DOMContentLoaded', loadComplaints);
+
+// Handle form submit
+document.getElementById('complaintForm').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const category = document.getElementById('category').value;
+  const description = document.getElementById('description').value;
+
+  const res = await fetch(API_BASE, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ category, description })
+  });
+
+  if (res.ok) {
+    document.getElementById('category').value = '';
+    document.getElementById('description').value = '';
+    loadComplaints();
+  } else {
+    alert('Error adding complaint');
+  }
+});
+
+async function loadComplaints() {
+  const res = await fetch(API_BASE);
+  const complaints = await res.json();
+
+  const tbody = document.querySelector('#complaintsTable tbody');
+  tbody.innerHTML = '';
+
+  complaints.forEach(c => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${c.complaint_id}</td>
+      <td>${c.category}</td>
+      <td>${c.description}</td>
+      <td>${c.status}</td>
+      <td>${c.created_at}</td>
+      <td>${c.updated_at}</td>
+      <td>
+        <button onclick="updateStatus(${c.complaint_id}, 'In Progress')">In Progress</button>
+        <button onclick="updateStatus(${c.complaint_id}, 'Resolved')">Resolve</button>
+        <button onclick="deleteComplaint(${c.complaint_id})">Delete</button>
+      </td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+async function updateStatus(id, status) {
+  const res = await fetch(`${API_BASE}/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ status })
+  });
+  if (res.ok) {
+    loadComplaints();
+  } else {
+    alert('Error updating complaint');
+  }
+}
+
+async function deleteComplaint(id) {
+  const res = await fetch(`${API_BASE}/${id}`, { method: 'DELETE' });
+  if (res.ok) {
+    loadComplaints();
+  } else {
+    alert('Error deleting complaint');
+  }
+}
+</script>
+</body>
+</html>

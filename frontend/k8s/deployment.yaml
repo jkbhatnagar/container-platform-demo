@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: complaints-frontend
+  labels:
+    app: complaints-frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: complaints-frontend
+  template:
+    metadata:
+      labels:
+        app: complaints-frontend
+    spec:
+      containers:
+        - name: complaints-frontend
+          image: your-dockerhub-username/complaints-frontend:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+          env:
+            # Set this to the full base path your backend is reachable at inside cluster
+            # e.g. http://complaints-service/complaints or http://complaints-service:80/complaints
+            - name: API_BASE
+              value: "http://complaints-service/complaints"
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 20
+            periodSeconds: 20
