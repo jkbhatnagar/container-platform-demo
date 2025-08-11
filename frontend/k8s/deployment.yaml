@@ -25,7 +25,8 @@ spec:
             # Set this to the full base path your backend is reachable at inside cluster
             # e.g. http://complaints-service/complaints or http://complaints-service:80/complaints
             - name: API_BASE
-              value: "http://complaints-backend-service:80/complaints"
+              # value: "http://complaints-backend-service:80/complaints"
+              value: "http://localhost:8080/complaints"
           readinessProbe:
             httpGet:
               path: /
