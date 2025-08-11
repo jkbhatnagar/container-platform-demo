@@ -2,9 +2,9 @@ const express = require('express');
 const pool = require('./db');
 require('dotenv').config();
 
-const cors = require('cors');
-const allowedOrigin = process.env.CORS_ORIGIN || '*';
-app.use(cors({ origin: allowedOrigin }));
+// const cors = require('cors');
+// const allowedOrigin = process.env.CORS_ORIGIN || '*';
+// app.use(cors({ origin: allowedOrigin }));
 
 const app = express();
 app.use(express.json());

@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: complaints-backend-container-nodejs
-          image: jatinbhatnagar/container-platform-demo-backend-nodejs:v0.2
+          image: jatinbhatnagar/container-platform-demo-backend-nodejs:v0.3
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3000
@@ -50,8 +50,6 @@ spec:
                 secretKeyRef:
                   name: complaints-backend-secret
                   key: PGPASSWORD
-            - name: CORS_ORIGIN
-              value: "http://localhost"
           readinessProbe:
             httpGet:
               path: /complaints
