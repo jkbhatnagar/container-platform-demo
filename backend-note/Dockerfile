@@ -8,7 +8,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # Install deps (production only by default)
-RUN npm ci
+RUN npm ci --only=production
 
 # Copy app source
 COPY . .

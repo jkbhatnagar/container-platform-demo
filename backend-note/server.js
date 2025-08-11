@@ -76,6 +76,6 @@ app.get('/notes/healthz', (req, res) => {
 });
 
 // Start the server
-app.listen(port, () => {
-  console.log(`Note-taking API running at http://localhost:${port}`);
+app.listen(port, "0.0.0.0", () => {
+  console.log(`Note-taking API running at http://0.0.0.0:${port}`);
 });

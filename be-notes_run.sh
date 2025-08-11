@@ -1,4 +1,13 @@
-# docker build https://github.com/jkbhatnagar/container-platform-demo.git#main:backend-note -t jatinbhatnagar/container-platform-demo-backend-notesapp-nodejs:v0.1
+# hostnamectl
+
+# docker ps -a
+# docker stop <>
+# docker container rm <>
+
+# docker image ls
+# docker image rm <>
+
+# docker build --platform linux/amd64 https://github.com/jkbhatnagar/container-platform-demo.git#main:backend-note -t jatinbhatnagar/container-platform-demo-backend-notesapp-nodejs:v0.1
 # docker login -u jatinbhatnagar
 # docker push jatinbhatnagar/container-platform-demo-backend-notesapp-nodejs:v0.1
 
