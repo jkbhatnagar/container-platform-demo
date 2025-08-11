@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: complaints-frontend
-          image: your-dockerhub-username/complaints-frontend:latest
+          image: jatinbhatnagar/container-platform-demo-backend-nginx:v0.1
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80
@@ -24,7 +24,7 @@ spec:
             # Set this to the full base path your backend is reachable at inside cluster
             # e.g. http://complaints-service/complaints or http://complaints-service:80/complaints
             - name: API_BASE
-              value: "http://complaints-service/complaints"
+              value: "http://complaints-backend-service/complaints"
           readinessProbe:
             httpGet:
               path: /
