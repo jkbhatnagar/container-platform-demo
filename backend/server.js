@@ -85,11 +85,6 @@ app.delete('/complaints/:id', async (req, res) => {
   }
 });
 
-// healthz route
-app.get('/complaints/healthz', (req, res) => {
-  res.status(200).json({ status: 'ok' });
-});
-
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Complaints service running on port ${PORT}`);

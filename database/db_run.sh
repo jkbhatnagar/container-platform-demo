@@ -1,19 +1,9 @@
-# git clone https://github.com/jkbhatnagar/container-platform-demo.git
-# cd container-platform-demo/
-# sudo chmod +x db_run.sh
-# ./db_run.sh
-
 kubectl apply -f database/k8s/configmap.yaml
-
 kubectl apply -f database/k8s/deployment.yaml
-
 kubectl apply -f database/k8s/service.yaml
-
-kubectl get configmaps
-
-kubectl get pods
-
-kubectl get svc
+kubectl get configmap -n container-platform-demo -l  app=complaints-postgres-initdb
+kubectl get pods -n container-platform-demo -l app=complaints-postgres-deployment
+kubectl get svc -n container-platform-demo -l app=complaints-postgres-service
 
 # --------- Run in a seperate terminal ---------
 # sudo apt update

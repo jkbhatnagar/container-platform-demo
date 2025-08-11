@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: complaints-backend-config
-  namespace: default
+  namespace: container-platform-demo
 data:
   PGHOST: complaints-postgres-service
   PGDATABASE: complaints_db
