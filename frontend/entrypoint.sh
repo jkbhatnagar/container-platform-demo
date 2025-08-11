@@ -2,7 +2,7 @@
 set -e
 
 # Default API base if not provided
-: "${API_BASE:=http://complaints-backend-service/complaints}"
+: "${API_BASE:=http://complaints-backend-service.container-platform-demo/complaints}"
 
 # Replace placeholder in index.html if template exists
 if [ -f /usr/share/nginx/html/index.html ]; then
