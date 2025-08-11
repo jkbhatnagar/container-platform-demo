@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: complaints-frontend
-          image: jatinbhatnagar/container-platform-demo-frontend-nginx:v0.3
+          image: jatinbhatnagar/container-platform-demo-frontend-nginx:v0.4
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80
@@ -25,7 +25,7 @@ spec:
             # Set this to the full base path your backend is reachable at inside cluster
             # e.g. http://complaints-service/complaints or http://complaints-service:80/complaints
             - name: API_BASE
-              value: "http://complaints-backend-service.container-platform-demo/complaints"
+              value: "http://complaints-backend-service.container-platform-demo:80/complaints"
           readinessProbe:
             httpGet:
               path: /
